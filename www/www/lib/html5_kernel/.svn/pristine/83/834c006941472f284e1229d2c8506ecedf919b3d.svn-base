@@ -1,0 +1,15 @@
+var RuntimePlugin = function() {
+}
+
+//=========================================================SHUTDOWN APP=============================================
+RuntimePlugin.prototype.shutdownApp = function(str) {
+    PhoneGap.exec(null, null, "RuntimePlugin", "shutdownApp",[str]);
+};
+
+//=========================================================REGISTER PLUGIN==========================================
+PhoneGap.addConstructor(function() {
+	if (!window.plugins) {
+		window.plugins = {};
+	}
+	window.plugins.RuntimePlugin = new RuntimePlugin();
+});

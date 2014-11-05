@@ -1,0 +1,40 @@
+var AuthPlugin = function() {
+};
+//Prototype for Authentication...
+AuthPlugin.prototype.authenticateProcess = function(str, success, fail) {
+	PhoneGap.exec(success, fail, "AuthPlugin", "authenticate", [str]);
+};
+//=================================================AUTHENTICATION==================================================================================
+/**
+ * Method authenticate.
+ * @param appName String
+ * @param metadata String
+ * @param url String
+ * @param userName String
+ * @param passWord String
+ * @param companyAlias String
+ * @param feusrid String
+ * @param deviceType String
+ * @param loginCallBack function
+ */
+AuthPlugin.prototype.authenticate=function(appName,metadata,url,userName,passWord,companyAlias,deviceType,customDeviceId,namespace,loginCallBack) {
+
+	var query ={"APP_NAME":appName,
+		    "METADATA":metadata,
+		    "URL":url,
+		    "USER_ID":userName,
+		    "PASSWORD":passWord,
+		    "COMPANY_ALIAS":companyAlias,
+		    "FEUSRID":customDeviceId,
+		    "DEVICE_TYPE":deviceType,
+		    "NAMESPACE":namespace};
+
+this.authenticateProcess(query,function(result){loginCallBack(result);},function(e){console.log(e);});		
+};
+//==================================================REGISTER PLUGIN===============================================================================
+PhoneGap.addConstructor(function() {
+	if (!window.plugins) {
+		window.plugins = {};
+	}
+	window.plugins.AuthPlugin = new AuthPlugin();
+});

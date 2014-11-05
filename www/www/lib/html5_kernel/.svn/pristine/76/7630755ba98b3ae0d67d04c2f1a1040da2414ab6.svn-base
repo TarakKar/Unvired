@@ -1,0 +1,87 @@
+var SyncEnginePlugin = function() {
+}
+
+//Prototype for DATA SENDER in ASYNCHRONOUS MODE...
+SyncEnginePlugin.prototype.sendDataInAsyncModeProcess = function(str, success, fail) {
+	PhoneGap.exec(success, fail, "SyncEnginePlugin", "sendDataInAsyncMode", [str]);
+};
+
+//Prototype for DATA SENDER in SYNCHRONOUS MODE...
+SyncEnginePlugin.prototype.sendDataInSyncModeProcess = function(str, success, fail) {
+	PhoneGap.exec(success, fail, "SyncEnginePlugin", "sendDataInSyncMode", [str]);
+};
+
+//Prototype for DATA RECEIVER get messages in background...
+SyncEnginePlugin.prototype.getMessagesInBackgroundProcess = function(str, success, fail) {
+	PhoneGap.exec(success, fail, "SyncEnginePlugin", "getMessagesInBackground", [str]);
+};
+
+//Prototype for Generate IBXM...
+SyncEnginePlugin.prototype.generateMessageProcess = function(str, success, fail) {
+	PhoneGap.exec(success, fail, "SyncEnginePlugin", "generateIbxml", [str]);
+};
+//=================================ASYNC_MODE=============================================
+/**
+ * Method sendDataInAsyncMode.
+ * @param BEArray Array
+ * @param companyNamespace String
+ * @param processAgentFunctionName String
+ */
+SyncEnginePlugin.prototype.sendDataInAsyncMode=function(BEObj,companyNamespace,processAgentFunctionName,callBack) {
+var query ={
+           "BE":BEObj,
+           "companyNamespace":companyNamespace,
+           "processAgentFunctionName":processAgentFunctionName
+           };
+this.sendDataInAsyncModeProcess(query,function(result){callBack(result)},function(e){console.log(e)});		
+}
+//=================================SYNC_MODE=============================================
+/**
+ * Method sendDataInSyncMode.
+ * @param customData String
+ * @param beName String
+ * @param beId String
+ * @param companyNamespace String
+ * @param processAgentFunctionName String
+ * @param sendDataInSyncModeCallback function
+ */
+SyncEnginePlugin.prototype.sendDataInSyncMode=function(customData,beName,beId,companyNamespace,processAgentFunctionName,sendDataInSyncModeCallback) {
+	var query ={
+	           "customData":customData,
+	           "beName":beName,
+	           "beId":beId,
+	           "companyNamespace":companyNamespace,
+	           "processAgentFunctionName":processAgentFunctionName
+	           };
+this.sendDataInSyncModeProcess(query,function(result){sendDataInSyncModeCallback(result)},function(e){console.log(e)});		
+}
+//=================================GET_MESSAGES_IN_BACKGROUND=============================================
+
+SyncEnginePlugin.prototype.getMessagesInBackground=function(callBack) {
+var query ="";
+this.getMessagesInBackgroundProcess(query,function(result){callBack(result)},function(e){console.log(e)});		
+}
+//=================================GENERATE_MESSAGE_IBXML=================================================
+/**
+ * Method generateIBXML.
+ * @param headerDataStructure String
+ * @param itemDataStructureArray  Array String
+ * @param generateMessageCallBack function
+ */
+SyncEnginePlugin.prototype.generateIBXML=function(headerName,headerDataStructure,itemName,itemDataStructures,generateMessageCallBack) {
+	var query ={
+			"HEADER_TABLE_NAME":headerName,
+			"HEADER":headerDataStructure,
+			"ITEM_TABLE_NAME":itemName,
+			"ITEMS":itemDataStructures
+	};
+
+	this.generateMessageProcess(query,function(result){generateMessageCallBack(result)},function(e){console.log(e)});		
+	}
+//=================================REGISTER PLUGIN========================================================
+PhoneGap.addConstructor(function() {
+	if (!window.plugins) {
+		window.plugins = {};
+	}
+	window.plugins.SyncEnginePlugin = new SyncEnginePlugin();
+});
