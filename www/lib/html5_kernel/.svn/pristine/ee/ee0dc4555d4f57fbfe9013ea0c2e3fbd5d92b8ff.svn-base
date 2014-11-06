@@ -1,0 +1,12 @@
+var FWSettingsPlugin = function() {
+};
+FWSettingsPlugin.prototype.startSettingActivity=function() {
+
+	PhoneGap.exec('', '', "FWSettingsPlugin", "startSettingActivity", []);	
+};
+PhoneGap.addConstructor(function() {
+	if (!window.plugins) {
+		window.plugins = {};
+	}
+	window.plugins.FWSettingsPlugin = new FWSettingsPlugin();
+});

@@ -1,0 +1,1 @@
+Ext.define("Sample.view.Viewport",{extend:"Ext.Container",alias:"widget.mainView",config:{fullscreen:true,layout:"hbox",items:[{xtype:"customerlist",cls:"slide",width:"100%"}]}});

@@ -1,0 +1,118 @@
+function getBEFromJsonObject(jsonObj) {
+
+	var BE = new Array();
+	var beList = jsonObj.IndienceMessage.data.Application.BusinessEntity;
+	if (beList != null) {
+	  //for more than 1 BisinessEntity...
+	  if(beList instanceof Array){
+		for ( var i = 0; i < beList.length; i++) {
+			var headerObj = {};
+			var iList = new Array();
+
+			// get headers...
+			var headerFieldList = beList[i].header.Field;
+			var headerName=beList[i].header.name;
+			var hfieldObj = {};
+			for ( var j = 0; j < headerFieldList.length; j++) {
+				hfieldObj[headerFieldList[j].name] = headerFieldList[j].content;
+			}
+			headerObj["HEADER"] = hfieldObj;
+			headerObj["NAME"]=headerName;
+			hfieldObj = null;
+
+			// get items...
+			var itemList = beList[i].item;
+			//for more than 1 item...
+			if(itemList instanceof Array){
+			for ( var k = 0; k < itemList.length; k++) {
+				var ifieldObj = {};
+				var itemObj={};
+				var itemFieldList = itemList[k].Field;
+				var itemName=itemList[k].name;
+				    for ( var n = 0; n < itemFieldList.length; n++) {
+					ifieldObj[itemFieldList[n].name] = itemFieldList[n].content;
+				    }
+				itemObj["ITEM"]=ifieldObj;
+				itemObj["NAME"]=itemName;
+				iList.push(itemObj);
+				ifieldObj = null;
+				itemObj=null;
+			   }
+			}
+			//for only 1 item...
+			else if(itemList instanceof Object){
+			var ifieldObj = {};
+				var itemObj={};
+				var itemFieldList = itemList.Field;
+				var itemName=itemList.name;
+				    for ( var n = 0; n < itemFieldList.length; n++) {
+					ifieldObj[itemFieldList[n].name] = itemFieldList[n].content;
+				    }
+				itemObj["ITEM"]=ifieldObj;
+				itemObj["NAME"]=itemName;
+				iList.push(itemObj);
+				ifieldObj = null;
+				itemObj=null;
+			}
+			headerObj["ITEMS"] = iList;
+			iList = null;
+			BE.push(headerObj);
+		    }
+	    }
+		//for only 1 BusinessEntity...
+		else if(beList instanceof Object){
+		var headerObj = {};
+			var iList = new Array();
+
+			// get headers...
+			var headerFieldList = beList.header.Field;
+			var headerName=beList.header.name;
+			var hfieldObj = {};
+			for ( var j = 0; j < headerFieldList.length; j++) {
+				hfieldObj[headerFieldList[j].name] = headerFieldList[j].content;
+			}
+			headerObj["HEADER"] = hfieldObj;
+			headerObj["NAME"]=headerName;
+			hfieldObj = null;
+
+			// get items...
+			var itemList = beList.item;
+			//for more than 1 item...
+			if(itemList instanceof Array){
+			for ( var k = 0; k < itemList.length; k++) {
+				var ifieldObj = {};
+				var itemObj={};
+				var itemFieldList = itemList[k].Field;
+				var itemName=itemList[k].name;
+				    for ( var n = 0; n < itemFieldList.length; n++) {
+					ifieldObj[itemFieldList[n].name] = itemFieldList[n].content;
+				    }
+				itemObj["ITEM"]=ifieldObj;
+				itemObj["NAME"]=itemName;
+				iList.push(itemObj);
+				ifieldObj = null;
+				itemObj=null;
+			   }
+			}
+			//for 1 item...
+			else if(itemList instanceof Object){
+			var ifieldObj = {};
+				var itemObj={};
+				var itemFieldList = itemList.Field;
+				var itemName=itemList.name;
+				    for ( var n = 0; n < itemFieldList.length; n++) {
+					ifieldObj[itemFieldList[n].name] = itemFieldList[n].content;
+				    }
+				itemObj["ITEM"]=ifieldObj;
+				itemObj["NAME"]=itemName;
+				iList.push(itemObj);
+				ifieldObj = null;
+				itemObj=null;
+			}
+			headerObj["ITEMS"] = iList;
+			iList = null;
+			BE.push(headerObj);
+		    }
+	}
+	return BE;
+}
